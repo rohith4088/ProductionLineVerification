@@ -1,5 +1,4 @@
-from ProductionLineVerification import BlueWasherDetect
+from ProductionLineVerification.config import configuration
 
 
-bluob = BlueWasherDetect()
-bluob.detect_washer("/Users/rohithr/Desktop/wipro_clean/resources/blue_washer.jpg")
+bluob = configuration.BlueWasherDetect("/Users/rohithr/Desktop/ProductionLineVerification/resources/blue_washer.jpg")
