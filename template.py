@@ -15,6 +15,7 @@ list_of_files = [
     f"{project_name}/__init__.py",
     f"{project_name}/config/__init__.py",
     f"{project_name}/config/configuration.py",
+    f"{project_name}/src/__init__.py",
 ]
 
 for file_path in list_of_files:
