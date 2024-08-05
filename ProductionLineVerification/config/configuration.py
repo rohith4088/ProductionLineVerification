@@ -142,10 +142,10 @@ class blackWhiteDetect():
 
 
 
-obj = BlueWasherDetect("/Users/rohithr/Desktop/wipro_clean/bluewasher/blue_washer.jpg")
-obj.detect_washer()
-print(obj.check_orientation())
+# obj = BlueWasherDetect("/Users/rohithr/Desktop/wipro_clean/bluewasher/blue_washer.jpg")
+# obj.detect_washer()
+# print(obj.check_orientation())
 
 
-bwo = blackWhiteDetect("/Users/rohithr/Desktop/wipro_clean/resources/bw.jpeg")
-bwo.BlackWhiteCheck()
+# bwo = blackWhiteDetect("/Users/rohithr/Desktop/wipro_clean/resources/bw.jpeg")
+# bwo.BlackWhiteCheck()
