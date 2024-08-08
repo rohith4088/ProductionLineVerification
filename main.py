@@ -20,7 +20,7 @@ class CaptureSave():
             url = ""
             with open(filename, 'rb') as file:
                 try:
-                    response = requests.post(url, files={'image': file})
+                    response = requests.post(url, files={'image': filename})
                     response.raise_for_status()  
                     print(f"Successfully uploaded {filename} to the server.")
                 except requests.exceptions.RequestException as e:
