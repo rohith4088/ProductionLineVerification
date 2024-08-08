@@ -49,9 +49,9 @@ class BlueWasherDetect():
             for i in circles[0, :]:
                 cv2.circle(frame, (i[0], i[1]), i[2], (0, 255, 0), 2)
                 cv2.circle(frame, (i[0], i[1]), 2, (0, 0, 255), 3)
-            print("True")
+            return True
         else:
-            print("False")
+            return False
     # file2 = open("orientation.log" , 'w')
     # @profile(stream = file2)
     def check_orientation(self):
@@ -82,11 +82,11 @@ class BlueWasherDetect():
             silver_count = cv2.countNonZero(silver_in_blue)
         
             if silver_count > 500:
-                print("The orientation of the blue washer is Downside")
-                #return False
+                #print("The orientation of the blue washer is Downside")
+                return False
             else:
-                print("The orientation of the blue washer is Upside")
-                #return True
+                #print("The orientation of the blue washer is Upside")
+                return True
         else:
             print("False")
             #print("Detected yellow washer")
@@ -144,11 +144,11 @@ class blackWhiteDetect():
                 print(f"Washer orientation: {orientation_label} (Confidence: {confidence:.2f})")
                 return orientation_label
             else:
-                print("True")
-                return None
+                return True
+                #return None
         else:
-            print("False")
-            return None
+            return False
+            #return None
 
 
 # class PistonDetect():
