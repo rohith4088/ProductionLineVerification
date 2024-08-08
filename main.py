@@ -3,8 +3,7 @@ import time
 import os
 from pathlib import Path
 from ProductionLineVerification.config import configuration
-#from ProductionLineVerification.src import capture_roi
-
+import requests
 class CaptureSave():
     def __init__(self, images_folder="images", interval=3):
         self.cap = cv2.VideoCapture(0)
@@ -18,7 +17,15 @@ class CaptureSave():
         if ret:
             filename = f"{self.images_folder}/current.jpg"
             cv2.imwrite(filename, frame)
-            print(f"Saved frame {frame_count} to {filename}")
+            url = ""
+            with open(filename, 'rb') as file:
+                try:
+                    response = requests.post(url, files={'image': file})
+                    response.raise_for_status()  
+                    print(f"Successfully uploaded {filename} to the server.")
+                except requests.exceptions.RequestException as e:
+                    print(f"Failed to upload {filename}. Error: {e}") 
+                    print(f"Saved frame {frame_count} to {filename}")
         else:
             print("Failed to capture frame")
 
@@ -47,6 +54,18 @@ if __name__ == "__main__":
         frame_count += 1
         capture_obj.process_latest_image()
         time.sleep(capture_obj.interval)
+
+
+
+
+
+
+
+
+
+
+
+
 # import cv2
 # import time
 # import os

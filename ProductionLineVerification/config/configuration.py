@@ -88,7 +88,8 @@ class BlueWasherDetect():
                 print("The orientation of the blue washer is Upside")
                 #return True
         else:
-            print("Detected yellow washer")
+            print("False")
+            #print("Detected yellow washer")
             # file_name = f'yellowwasher_{len(os.listdir(yellowasher_dir))}.jpg'
             # full_path = os.path.join(yellowasher_dir, file_name)
             # save_yellow_washer_image(frame, roi_x, roi_y, roi_w, roi_h, full_path)
@@ -108,9 +109,11 @@ class YellowWasherDetect():
             for i in circles[0, :]:
                 cv2.circle(frame, (i[0], i[1]), i[2], (0, 255, 0), 2)
                 cv2.circle(frame, (i[0], i[1]), 2, (0, 0, 255), 3)
-            return True, circles[0]
+            # return True, circles[0]
+            print('TRUE')
         else:
-            return False, None
+            # return False, None
+            print("FALSE")
         
 
 from ultralytics import YOLO
@@ -141,10 +144,10 @@ class blackWhiteDetect():
                 print(f"Washer orientation: {orientation_label} (Confidence: {confidence:.2f})")
                 return orientation_label
             else:
-                print("No washer detected.")
+                print("True")
                 return None
         else:
-            print("No detections made.")
+            print("False")
             return None
 
 
