@@ -85,7 +85,8 @@ class BlueWasherDetect():
             else:
                 #print("The orientation of the blue washer is Upside")
                 return True
-        #else:
+        else:
+            return False
             #print("False")
             #print("Detected yellow washer")
             # file_name = f'yellowwasher_{len(os.listdir(yellowasher_dir))}.jpg'

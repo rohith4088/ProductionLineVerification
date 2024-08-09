@@ -24,7 +24,7 @@ class Detect():
                 #print(f"Washer orientation: {orientation_label} (Confidence: {confidence:.2f})")
                 return [orientation_label,True]
             else:
-                return ["HIDDEN_COVER_TWO",False]
+                return [orientation_label,False]
                 #print("this is first else part")
                 #print("this is ",orientation_labels.values())
                 #return True
