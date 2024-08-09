@@ -22,18 +22,18 @@ class Detect():
                 #print(orientation_labels.values())
             
                 #print(f"Washer orientation: {orientation_label} (Confidence: {confidence:.2f})")
-                return orientation_label
+                return [orientation_label,True]
             else:
-                return [orientation_label , True]
+                return ["HIDDEN_COVER_TWO",False]
                 #print("this is first else part")
                 #print("this is ",orientation_labels.values())
                 #return True
-                #return None
-        else:
-            return [orientation_label , False]
+        #         #return None
+        # else:
+        #     return ["HIDDEN_COVER_TWO",False]
             #print("this is else part")
             #print(orientation_label.vales())
             # print("false")
             # return False
-det = Detect("resources/octogan.jpeg")
-print(det.ComponentDetction())
+# det = Detect("resources/octogan.jpeg")
+# print(det.ComponentDetction())

@@ -14,27 +14,28 @@ class blackWhiteDetect():
         if img is None:
             print(f"Failed to load image from {self.image_path}. Please check the file path.")
             return None
-        results = model(img)
+        results = model(img,show = True)
         if results and len(results) > 0:
             result = results[0]
             if len(result.boxes) > 0:
                 box = result.boxes[0]
                 class_id = int(box.cls[0])
                 confidence = float(box.conf[0])
-                orientation_labels = {0: 'CORRECT', 1: 'CORRECT-NOTCORRECT',2:'NOTCORRECT'} 
+                orientation_labels = {0:'HIDDEN_COVER_TWO'} 
                 orientation_label = orientation_labels.get(class_id, 'Unknown')
             
-                print(f"Washer orientation: {orientation_label} (Confidence: {confidence:.2f})")
-                return orientation_label
+                #print(f"Washer orientation: {orientation_label} (Confidence: {confidence:.2f})")
+                #return orientation_label
+                return [orientation_label , True]
             else:
-                print("true")
-                return True
+                return [orientation_label , False]
+
                 #return None
-        else:
-            print("false")
-            return False
-            #return None
+        # else:
+        #     #print("false")
+        #     return [orientation_label,False]
+        #     #return None
 
 
-obj = blackWhiteDetect('resources/WhatsApp Image 2024-07-24 at 18.43.04.jpeg')
-obj.BlackWhiteCheck()
+obj = blackWhiteDetect('resources/octogan.jpeg')
+print(obj.BlackWhiteCheck())

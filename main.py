@@ -1,9 +1,16 @@
-import cv2
-import time
-import os
-from pathlib import Path
-from ProductionLineVerification.config import configuration
+SEQ1 = False
+SEQ2 = False
+SEQ3 = False
+COMP = False
+
 import requests
+import os 
+from ProductionLineVerification.src import component_detect
+from ProductionLineVerification.config import configuration
+import cv2
+from pathlib import Path
+import time
+
 class CaptureSave():
     def __init__(self, images_folder="images", interval=3):
         self.cap = cv2.VideoCapture(0)
@@ -11,21 +18,20 @@ class CaptureSave():
         self.interval = interval
         if not os.path.exists(self.images_folder):
             os.makedirs(self.images_folder)
-
     def capture_and_save_frame(self, frame_count):
         ret, frame = self.cap.read()
         if ret:
             filename = f"{self.images_folder}/current.jpg"
             cv2.imwrite(filename, frame)
-            url = ""
-            with open(filename, 'rb') as file:
-                try:
-                    response = requests.post(url, files={'image': filename})
-                    response.raise_for_status()  
-                    print(f"Successfully uploaded {filename} to the server.")
-                except requests.exceptions.RequestException as e:
-                    print(f"Failed to upload {filename}. Error: {e}") 
-                    print(f"Saved frame {frame_count} to {filename}")
+            # url = ""
+            # with open(filename, 'rb') as file:
+            #     try:
+            #         response = requests.post(url, files={'image': filename})
+            #         response.raise_for_status()  
+            #         print(f"Successfully uploaded {filename} to the server.")
+            #     except requests.exceptions.RequestException as e:
+            #         print(f"Failed to upload {filename}. Error: {e}") 
+            #         print(f"Saved frame {frame_count} to {filename}")
         else:
             print("Failed to capture frame")
 
@@ -36,16 +42,82 @@ class CaptureSave():
         #return f'{self.images_folder}/current.jpg'
     def process_latest_image(self):
         latest_image_path = self.get_latest_image_path()
-        if latest_image_path:
-            print(f"Latest image path: {latest_image_path}")
-            bluob = configuration.BlueWasherDetect(latest_image_path)
-            bluob.detect_washer()
-            bluob.check_orientation()
-            blackwh = configuration.blackWhiteDetect(latest_image_path)
-            blackwh.BlackWhiteCheck()
-        else:
-            print("No images found in the specified folder.")
+        # print("--------------")
+        # print(latest_image_path)
+        if COMP == False:
+            componentobject = component_detect.Detect(latest_image_path)
+            text = componentobject.ComponentDetction()
+            # print("-------")
+            # print(text)
+            # print("--------")
+            # print(text[1])
+            url = "http://194.233.76.50:3004/uploadComp/"+text[0]
+            try:
+                response = requests.post(url)
+                response.raise_for_status()
+                print(f"Successfully uploaded {text} to the server.")
+            except requests.exceptions.RequestException as e:
+                print(f"Failed to upload {text}. Error: {e}") 
+            if text[1] == True:
+                COMP == True
+                print("comp is true")
+        
+        if COMP == True:
 
+            if SEQ1 == False:
+                #print("entering blue sequence")
+                latest_image_path = self.get_latest_image_path()
+                blueobject = configuration.BlueWasherDetect(latest_image_path)#image_path allocation pending
+                detect_variable = blueobject.detect_washer()
+                orientation_variable =blueobject.check_orientation()
+                if detect_variable and orientation_variable:
+                    SEQ1 == True
+                    url = "http://194.233.76.50:3004/uploadSeq/blue"
+                    try:
+                        response = requests.post(url, files={'result':SEQ1})
+                        response.raise_for_status()
+                        print(f"Successfully uploaded {SEQ1} to the server.")
+                    except requests.exceptions.RequestException as e:
+                        print(f"Failed to upload {SEQ1}. Error: {e}")
+                # print(SEQ1 , SEQ2 , SEQ3)
+            elif SEQ2 == False:
+                print("entering yellow sequence")
+                latest_image_path = self.get_latest_image_path()
+                yellowobject = configuration.YellowWasherDetect(latest_image_path)
+                detect_variable = yellowobject.detect_washer()
+                if detect_variable:
+                    SEQ2 == True
+                    url = "http://194.233.76.50:3004/uploadSeq/yellow"
+                    try:
+                        response = requests.post(url, files={'result':SEQ2})
+                        response.raise_for_status()
+                        print(f"Successfully uploaded {SEQ2} to the server.")
+                    except requests.exceptions.RequestException as e:
+                        print(f"Failed to upload {SEQ2}. Error: {e}")
+                print("seq2")
+
+            elif SEQ3 == False:
+                print("enetring black and white sequence")
+                latest_image_path = self.get_latest_image_path
+                bwobject = configuration.blackWhiteDetect(latest_image_path)
+                detect_variable = bwobject.BlackWhiteCheck()
+                if detect_variable:
+                    SEQ3== True
+                    url = "http://194.233.76.50:3004/uploadSeq/bw"
+                    try:
+                        response = requests.post(url, files={'result':SEQ2})
+                        response.raise_for_status()
+                        print(f"Successfully uploaded {SEQ2} to the server.")
+                    except requests.exceptions.RequestException as e:
+                        print(f"Failed to upload {SEQ2}. Error: {e}")
+                print("seq3")
+
+    if (SEQ1 and SEQ2 and SEQ3 and COMP):   
+        SEQ1 = False
+        SEQ2 = False
+        SEQ3 = False
+        COMP = False
+    
 if __name__ == "__main__":
     capture_obj = CaptureSave()
     frame_count = 0
@@ -54,69 +126,3 @@ if __name__ == "__main__":
         frame_count += 1
         capture_obj.process_latest_image()
         time.sleep(capture_obj.interval)
-
-
-
-
-
-
-
-
-
-
-
-
-# import cv2
-# import time
-# import os
-# from pathlib import Path
-# from ProductionLineVerification.config import configuration
-# from ProductionLineVerification.src import capture_roi
-
-# class CaptureSave():
-#     def __init__(self, images_folder="images", interval=3):
-#         self.cap = cv2.VideoCapture(0)
-#         self.images_folder = images_folder
-#         self.interval = interval
-#         if not os.path.exists(self.images_folder):
-#             os.makedirs(self.images_folder)
-
-#     def capture_and_save_frame(self):
-#         ret, frame = self.cap.read()
-#         if ret:
-#             filename = f"{self.images_folder}/current.jpg"
-#             cv2.imwrite(filename, frame)
-#             print(f"Saved frame to {filename}")
-#         else:
-#             print("Failed to capture frame")
-
-#     def get_latest_image_path(self):
-#         # Since we're overwriting the same file, the latest image path is simply the file name
-#         return f"{self.images_folder}/current.jpg"
-
-#     def process_latest_image(self):
-#         latest_image_path = self.get_latest_image_path()
-#         if os.path.exists(latest_image_path):
-#             print(f"Processing latest image at {latest_image_path}")
-#             try:
-#                 # Attempt to read the image to ensure it's accessible
-#                 img = cv2.imread(latest_image_path)
-#                 if img is not None:
-#                     bluob = configuration.BlueWasherDetect(latest_image_path)
-#                     bluob.detect_washer(img)
-#                     bluob.check_orientation(img)
-#                     blackwh = configuration.blackWhiteDetect(latest_image_path)
-#                     blackwh.BlackWhiteCheck(img)
-#                 else:
-#                     print("Failed to read the image file.")
-#             except Exception as e:
-#                 print(f"An error occurred while processing the image: {e}")
-#         else:
-#             print(f"No file found at {latest_image_path}")
-
-# if __name__ == "__main__":
-#     capture_obj = CaptureSave()
-#     while True:
-#         capture_obj.capture_and_save_frame()
-#         capture_obj.process_latest_image()
-#         time.sleep(capture_obj.interval)
