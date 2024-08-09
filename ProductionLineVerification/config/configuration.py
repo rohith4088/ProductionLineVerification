@@ -87,8 +87,8 @@ class BlueWasherDetect():
             else:
                 #print("The orientation of the blue washer is Upside")
                 return True
-        else:
-            print("False")
+        #else:
+            #print("False")
             #print("Detected yellow washer")
             # file_name = f'yellowwasher_{len(os.listdir(yellowasher_dir))}.jpg'
             # full_path = os.path.join(yellowasher_dir, file_name)
@@ -109,11 +109,11 @@ class YellowWasherDetect():
             for i in circles[0, :]:
                 cv2.circle(frame, (i[0], i[1]), i[2], (0, 255, 0), 2)
                 cv2.circle(frame, (i[0], i[1]), 2, (0, 0, 255), 3)
-            # return True, circles[0]
-            print('TRUE')
+            return True#, circles[0]
+            #print('TRUE')
         else:
-            # return False, None
-            print("FALSE")
+            return False#, None
+            #print("FALSE")
         
 
 from ultralytics import YOLO
