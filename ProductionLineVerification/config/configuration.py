@@ -86,7 +86,7 @@ class BlueWasherDetect():
                 #print("The orientation of the blue washer is Upside")
                 return True
         else:
-            return False
+            return False 
             #print("False")
             #print("Detected yellow washer")
             # file_name = f'yellowwasher_{len(os.listdir(yellowasher_dir))}.jpg'
@@ -97,12 +97,11 @@ class BlueWasherDetect():
 class YellowWasherDetect():
     def __init__(self , image_path):
         self.image_path = image_path
-    def detect_washer(self, lower=np.array([15, 150, 150]), upper=np.array([35, 255, 255])):
+    def detect_washer(self, lower=np.array([20, 100, 100]), upper=np.array([30, 255, 255])):
         frame = cv2.imread(self.image_path)
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(hsv, lower, upper)
         circles = cv2.HoughCircles(mask, cv2.HOUGH_GRADIENT, dp=1, minDist=15, param1=50, param2=30, minRadius=10, maxRadius=200)
-    
         if circles is not None:
             circles = np.uint16(np.around(circles))
             for i in circles[0, :]:

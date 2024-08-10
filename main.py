@@ -111,7 +111,7 @@ class CaptureSave():
 
             elif SEQ3 == False:
                 print("enetring black and white sequence")
-                latest_image_path = self.get_latest_image_path
+                latest_image_path = self.get_latest_image_path()
                 bwobject = configuration.blackWhiteDetect(latest_image_path)
                 detect_variable = bwobject.BlackWhiteCheck()
                 if detect_variable:
