@@ -31,5 +31,5 @@ class blackWhiteDetect():
         else:
             print("No detections made.")
             return None
-bw = blackWhiteDetect("resources/bw.jpeg")
+bw = blackWhiteDetect("resources/IMG_0810.jpg")
 bw.BlackWhiteCheck()

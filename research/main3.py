@@ -2,7 +2,7 @@ import cv2
 import time
 import os
 from pathlib import Path
-from ProductionLineVerification.config import configuration
+#from ProductionLineVerification.config import configuration
 import requests
 class CaptureSave():
     def __init__(self, images_folder="images", interval=3):
@@ -17,7 +17,7 @@ class CaptureSave():
         if ret:
             filename = f"{self.images_folder}/current.jpg"
             cv2.imwrite(filename, frame)
-            url = ""
+            url = "demo"
             with open(filename, 'rb') as file:
                 try:
                     response = requests.post(url, files={'image': filename})
@@ -35,16 +35,20 @@ class CaptureSave():
         return str(sorted_files[0]) if sorted_files else None
         #return f'{self.images_folder}/current.jpg'
     def process_latest_image(self):
-        latest_image_path = self.get_latest_image_path()
-        if latest_image_path:
-            print(f"Latest image path: {latest_image_path}")
-            bluob = configuration.BlueWasherDetect(latest_image_path)
-            bluob.detect_washer()
-            bluob.check_orientation()
-            blackwh = configuration.blackWhiteDetect(latest_image_path)
-            blackwh.BlackWhiteCheck()
-        else:
-            print("No images found in the specified folder.")
+        img = cv2.imread(self.get_latest_image_path)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        blur = cv2.GaussianBlur(gray, (5, 5), 0)
+        edges = cv2.Canny(blur, 50, 150)
+        contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        for cnt in contours:
+            approx = cv2.approxPolyDP(cnt, 0.02 * cv2.arcLength(cnt, True), True)
+
+            # Check if the approximated contour is an octagon
+            if len(approx) == 8:
+                # Draw the octagon
+                cv2.drawContours(img, [approx], 0, (0, 255, 0), 3)
+        cv2.imshow("Octagon Detection", img)
+    
 
 if __name__ == "__main__":
     capture_obj = CaptureSave()

@@ -2,18 +2,11 @@ import cv2
 import numpy as np
 
 def detect_octagon(image_path):
-    # Load the image
     img = cv2.imread(image_path)
-
-    # Preprocess the image
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (5, 5), 0)
     edges = cv2.Canny(blur, 50, 150)
-
-    # Find contours
     contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-    # Approximate contours to polygons
     for cnt in contours:
         approx = cv2.approxPolyDP(cnt, 0.02 * cv2.arcLength(cnt, True), True)
 
@@ -26,6 +19,6 @@ def detect_octagon(image_path):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-# Example usage
-image_path = "/Users/rohithr/Desktop/wipro_clean/WhatsApp Image 2024-07-24 at 18.43.04.jpeg"
+
+image_path = "images/current.jpg"
 detect_octagon(image_path)

@@ -48,10 +48,7 @@ def BlueWasherDetect(frame, roi_x, roi_y, roi_w, roi_h, lower, upper):
     
     return False, None
 
-
-# The rest of your code remains unchanged...
-
-
+# The rest of your code remains uncha
 # def YellowWasherDetect(frame, roi_x, roi_y, roi_w, roi_h, lower, upper):
 #     # Implementation similar to BlueWasherDetect
 #     # Adjust color range and parameters for yellow detection

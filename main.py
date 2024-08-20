@@ -5,6 +5,9 @@ from ProductionLineVerification.config import configuration
 import cv2
 from pathlib import Path
 import time
+# import google.generativeai as genai
+# from dotenv import load_dotenv
+
 #global SEQ1;global SEQ2;global SEQ3;global COMP 
 # global COMP  
 # global SEQ3 
@@ -25,8 +28,10 @@ class CaptureSave():
     def capture_and_save_frame(self, frame_count):
         ret, frame = self.cap.read()
         if ret:
+            x, y, w, h = 100, 100, 300, 300
+            roi = frame[y:y+h, x:x+w]
             filename = f"{self.images_folder}/current.jpg"
-            cv2.imwrite(filename, frame)
+            cv2.imwrite(filename, roi)
             # url = ""
             # with open(filename, 'rb') as file:
             #     try:
@@ -52,8 +57,8 @@ class CaptureSave():
         # print("----------")
         # print(COMP)
         if  COMP == False:
-            componentobject = component_detect.Detect(latest_image_path)
-            text = componentobject.ComponentDetction()
+            componentobject = component_detect.ComponentDetect(latest_image_path)
+            text = componentobject.DetectComponent()
             # print("-------")
             # print(text)
             # print("--------")
@@ -125,11 +130,11 @@ class CaptureSave():
                         print(f"Failed to upload {SEQ2}. Error: {e}")
                 print("seq3")
 
-    if (SEQ1 and SEQ2 and SEQ3 and COMP):   
-        SEQ1 = False
-        SEQ2 = False
-        SEQ3 = False
-        COMP = False
+        if (SEQ1 and SEQ2 and SEQ3 and COMP):   
+            SEQ1 = False
+            SEQ2 = False
+            SEQ3 = False
+            COMP = False
     
 if __name__ == "__main__":
     capture_obj = CaptureSave()
