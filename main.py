@@ -5,8 +5,7 @@ from ProductionLineVerification.config import configuration
 import cv2
 from pathlib import Path
 import time
-# import google.generativeai as genai
-# from dotenv import load_dotenv
+
 
 #global SEQ1;global SEQ2;global SEQ3;global COMP 
 # global COMP  
