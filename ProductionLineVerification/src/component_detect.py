@@ -39,28 +39,80 @@
 # # print(det.ComponentDetction())
 
 
+# import cv2
+# class ComponentDetect():
+#     def __init__(self , image_path):
+#         self.image_path = image_path
+
+#     def DetectComponent(self):
+#         img = cv2.imread(self.image_path)
+#         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+#         blur = cv2.GaussianBlur(gray, (5, 5), 0)
+#         edges = cv2.Canny(blur, 50, 150)
+#         contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+#         for cnt in contours:
+#             approx = cv2.approxPolyDP(cnt, 0.02 * cv2.arcLength(cnt, True), True,approxCurve=cv2.arcLength(cnt , True))
+#             if len(approx) == 8:
+#                 cv2.drawContours(img, [approx], 0, (0, 255, 0), 3)
+#                 cv2.imshow("Octagon Detection", img)
+#         #         return ["HIDDEN_COVER_TWO", True]
+
+#         # else:
+#         #     return [None , False]
+
+#         cv2.imshow("Octagon Detection", img)
+#         cv2.waitKey(0)
+#         cv2.destroyAllWindows()
+        
+# cd = ComponentDetect("resources/octogan.jpeg")
+# print(cd.DetectComponent())
+
+
+
 import cv2
+import numpy as np
 class ComponentDetect():
     def __init__(self , image_path):
         self.image_path = image_path
 
     def DetectComponent(self):
+        pixel_to_mm = 0.5
+        min_diameter_mm = 10
+        max_diameter_mm = 35
         img = cv2.imread(self.image_path)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        blur = cv2.GaussianBlur(gray, (5, 5), 0)
-        edges = cv2.Canny(blur, 50, 150)
-        contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        for cnt in contours:
-            approx = cv2.approxPolyDP(cnt, 0.02 * cv2.arcLength(cnt, True), True)
-            if len(approx) == 8:
-                cv2.drawContours(img, [approx], 0, (0, 255, 0), 3)
-                cv2.imshow("Octagon Detection", img)
-                return ["HIDDEN_COVER_TWO", True]
+        gray_blurred = cv2.blur(gray, (3, 3))
+        detected_circles = cv2.HoughCircles(gray_blurred,cv2.HOUGH_GRADIENT, 1, 20, param1=50,param2=30, minRadius=1, maxRadius=40)
+        if detected_circles is not None:
+            detected_circles = np.uint16(np.around(detected_circles))
+            count = 0
+            for pt in detected_circles[0, :]:
+                a, b, r = pt[0], pt[1], pt[2]
+                diameter_in_mm = 2 * r * pixel_to_mm
+
+                if min_diameter_mm < diameter_in_mm < max_diameter_mm:
+                    count += 1
+                    cv2.circle(img, (a, b), r, (0, 255, 0), 2)
+                    cv2.circle(img, (a, b), 1, (0, 0, 255), 3)
+                    cv2.putText(img, f"Diameter: {diameter_in_mm:.2f} mm",(a - r, b - r - 10), cv2.FONT_HERSHEY_SIMPLEX,0.6, (255, 0, 0), 2)
+            
+
+            if 1 <= count <= 3:
+                #print("HC-ONE DETECTED")
+                return ["HC-ONE DETECTED",True]
+            elif 4 <= count <= 5:
+                #print("Piston DETECTED")
+                return ["piston" , True]
+            elif 7 <= count <= 13:
+               # print("HC-THREE DETECTED")
+               return ["HC-THRE" , True]
+            elif count > 14:
+                #print("NO COMPONENT DETECTION")
+                return ["NO COMPONENT" , False]
         else:
-            return [None , False]
+            #print("NO COMPONENT DETECTION")
+            return ["NO COMPONENT" , False]
 
-        cv2.imshow("Octagon Detection", img)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-        
-
+        #cv2.imwrite("Detected Circle", img)
+# cd = ComponentDetect("bluewasher/blue_washer.jpg")
+# print(cd.DetectComponent())

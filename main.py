@@ -6,12 +6,6 @@ import cv2
 from pathlib import Path
 import time
 
-
-#global SEQ1;global SEQ2;global SEQ3;global COMP 
-# global COMP  
-# global SEQ3 
-# global SEQ2
-# global SEQ1
 SEQ1 = False
 SEQ2 = False
 SEQ3 = False
@@ -27,10 +21,13 @@ class CaptureSave():
     def capture_and_save_frame(self, frame_count):
         ret, frame = self.cap.read()
         if ret:
-            x, y, w, h = 100, 100, 300, 300
-            roi = frame[y:y+h, x:x+w]
+            # x, y, w, h = 100, 100, 300, 300
+            # roi = frame[y:y+h, x:x+w]
+            #roi_x, roi_y, roi_w, roi_h = 100, 100, 260, 240   
+            #roi_frame = frame[roi_y:roi_y + roi_h, roi_x:roi_x + roi_w].copy()
+            #hsv = cv2.cvtColor(roi_frame, cv2.COLOR_BGR2HSV)
             filename = f"{self.images_folder}/current.jpg"
-            cv2.imwrite(filename, roi)
+            cv2.imwrite(filename, frame)
             # url = ""
             # with open(filename, 'rb') as file:
             #     try:
@@ -143,3 +140,5 @@ if __name__ == "__main__":
         frame_count += 1
         capture_obj.process_latest_image()
         time.sleep(capture_obj.interval)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break

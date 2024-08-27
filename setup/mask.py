@@ -20,6 +20,7 @@ washer_sequence = ['blue', 'yellow', 'black', 'white']
 #     lower , upper = color_ranges[colorname]
 #     print(lower, upper)
 roi_x, roi_y, roi_w, roi_h = 100, 100, 260, 240  
+
 while True:
     ret, frame = cap.read()
     if not ret:
