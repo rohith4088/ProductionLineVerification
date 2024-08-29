@@ -10,7 +10,7 @@ class BlueWasherDetect:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(hsv, lower, upper)
         #cv2.imwrite("mask.jpg" ,mask )
-        circles = cv2.HoughCircles(mask, cv2.HOUGH_GRADIENT, dp=1, minDist=15, param1=50, param2=30, minRadius=315, maxRadius=475)
+        circles = cv2.HoughCircles(mask, cv2.HOUGH_GRADIENT, dp=1, minDist=15, param1=50, param2=30, minRadius=315, maxRadius=395)
         #cv2.imwrite("circle.jpg" , circles)
         if circles is not None:
             circles = np.uint16(np.around(circles))
@@ -78,7 +78,7 @@ class BlueWasherDetect:
         return washer_result and orientation_result
 
 # Usage
-detector = BlueWasherDetect("resources/bluewrong.jpeg")
+detector = BlueWasherDetect("resources/piston.jpeg")
 final_result = detector.combined_result()
 
 print(f"Final Result: {final_result}")

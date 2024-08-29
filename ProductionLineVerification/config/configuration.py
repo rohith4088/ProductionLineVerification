@@ -214,7 +214,7 @@ class YellowWasherDetect():
         frame = cv2.imread(self.image_path)
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(hsv, lower, upper)
-        circles = cv2.HoughCircles(mask, cv2.HOUGH_GRADIENT, dp=1, minDist=15, param1=50, param2=30, minRadius=10, maxRadius=200)
+        circles = cv2.HoughCircles(mask, cv2.HOUGH_GRADIENT, dp=1, minDist=15, param1=50, param2=30, minRadius=315, maxRadius=396)
         if circles is not None:
             circles = np.uint16(np.around(circles))
             for i in circles[0, :]:

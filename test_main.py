@@ -82,7 +82,7 @@ class CaptureSave():
                 # # print("-----------")
                 # # print("detect_variable",detect_variable)
                 # orientation_variable =blueobject.check_orientation()
-                result = configuration.combined_result()
+                result = blueobject.combined_result()
                 # print("-----------")
                 # print("orreintation_varible",orientation_variable)
                 if result:
