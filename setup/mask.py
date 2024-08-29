@@ -8,7 +8,7 @@ cap.set(1920 , 1080)
 
 # Define color ranges in HSV format
 color_ranges = {
-    'blue': (np.array([20, 80, 50]), np.array([180, 255, 255])),
+    'blue': (np.array([94, 80, 2]), np.array([150, 255, 255])),
     'yellow': (np.array([15, 150, 150]), np.array([35, 255, 255])),
     'black': (np.array([0, 0, 0]), np.array([180, 255, 30])),
     'white': (np.array([0, 0, 200]), np.array([180, 20, 255]))
@@ -30,7 +30,7 @@ while True:
     hsv = cv2.cvtColor(roi_frame, cv2.COLOR_BGR2HSV)
 
     # Example for blue color detection
-    lower_blue, upper_blue = np.array([100, 150, 50]), np.array([130, 255, 255])
+    lower_blue, upper_blue = np.array([94, 80, 2]), np.array([130, 255, 255])
     lower_yellow , upper_yellow = np.array([15, 150, 50]), np.array([35, 255, 255])
     lower_black , upper_black = np.array([0, 0, 0]), np.array([180, 255, 30])
     lower_white , upper_white = np.array([0, 0, 200]), np.array([180, 20, 255]) 
@@ -39,9 +39,9 @@ while True:
     black = cv2.inRange(hsv, lower_black, upper_black)
     white = cv2.inRange(hsv, lower_white, upper_white)
     cv2.imshow("blue", blue)
-    cv2.imshow("yellow", yellow)
-    cv2.imshow("black", black)
-    cv2.imshow("white", white)
-    cv2.imshow("Frame", frame)
+    # cv2.imshow("yellow", yellow)
+    # cv2.imshow("black", black)
+    # cv2.imshow("white", white)
+    # cv2.imshow("Frame", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

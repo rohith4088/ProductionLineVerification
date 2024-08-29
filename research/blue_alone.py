@@ -1,7 +1,3 @@
-import cv2
-import numpy as np
-import os
-import requests
 
 import cv2
 import numpy as np
@@ -54,33 +50,33 @@ def BlueWasherDetect(frame, roi_x, roi_y, roi_w, roi_h, lower, upper):
 #     # Adjust color range and parameters for yellow detection
 #     pass
 
-def save_washer_image(frame, roi_x, roi_y, roi_w, roi_h, path):
-    roi_frame = frame[roi_y:roi_y+roi_h, roi_x:roi_x+roi_w].copy()
-    absolute_path = os.path.abspath(path)
-    cv2.imwrite(absolute_path, roi_frame)
-    assert os.path.exists(absolute_path), f"File does not exist: {absolute_path}"
+# def save_washer_image(frame, roi_x, roi_y, roi_w, roi_h, path):
+#     roi_frame = frame[roi_y:roi_y+roi_h, roi_x:roi_x+roi_w].copy()
+#     absolute_path = os.path.abspath(path)
+#     cv2.imwrite(absolute_path, roi_frame)
+#     assert os.path.exists(absolute_path), f"File does not exist: {absolute_path}"
 
-def upload_image_to_api(text):
-    url = "http://194.233.76.50:3003/uploadDummy"
-    try:
-        response = requests.post(url, files={'result': text})
-        response.raise_for_status()
-        print(f"Successfully uploaded {text} to the server.")
-    except requests.exceptions.RequestException as e:
-        print(f"Failed to upload {text}. Error: {e}")
+# def upload_image_to_api(text):
+#     url = "http://194.233.76.50:3003/uploadDummy"
+#     try:
+#         response = requests.post(url, files={'result': text})
+#         response.raise_for_status()
+#         print(f"Successfully uploaded {text} to the server.")
+#     except requests.exceptions.RequestException as e:
+#         print(f"Failed to upload {text}. Error: {e}")
 
 # Main execution
-cap = cv2.VideoCapture("WhatsApp Video 2024-06-26 at 15.17.39.mp4")
+cap = cv2.VideoCapture("resources/assembly_video.mp4")
 # cap = cv2.VideoCapture(0)  # Uncomment this line to use webcam
 
 roi_x, roi_y, roi_w, roi_h = 100, 100, 300, 300 
-bluewasher_dir = 'bluewasher'
+# bluewasher_dir = 'bluewasher'
 # yellowwasher_dir = 'yellowwasher'
 
 # if not os.path.exists(yellowwasher_dir):
 #     os.makedirs(yellowwasher_dir)
-if not os.path.exists(bluewasher_dir):
-    os.makedirs(bluewasher_dir)
+# if not os.path.exists(bluewasher_dir):
+#     os.makedirs(bluewasher_dir)
 
 blue_lower = np.array([90, 50, 50])
 blue_upper = np.array([130, 255, 255])
@@ -102,10 +98,10 @@ while True:
     
     if blue_detected:
         print(f"Blue washer detected with radius {blue_radius}")
-        file_name = f"bluewasher_{len(os.listdir(bluewasher_dir))}.jpg"
-        full_path = os.path.join(bluewasher_dir, file_name)
-        save_washer_image(frame, roi_x, roi_y, roi_w, roi_h, full_path)
-        upload_image_to_api("DETECTED BLUE WASHER")
+        # file_name = f"bluewasher_{len(os.listdir(bluewasher_dir))}.jpg"
+        # full_path = os.path.join(bluewasher_dir, file_name)
+        # save_washer_image(frame, roi_x, roi_y, roi_w, roi_h, full_path)
+        # upload_image_to_api("DETECTED BLUE WASHER")
     
     
     if blue_detected:

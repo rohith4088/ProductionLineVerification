@@ -37,7 +37,7 @@ class BlueWasherDetect():
     #         print("True" )
     #     else:
     #         print( "False"),None
-    def detect_washer(self, lower=np.array([20, 80, 50]), upper=np.array([180, 255, 255])):
+    def detect_washer(self, lower=np.array([94, 80, 2]), upper=np.array([130, 255, 255])):
         frame = cv2.imread(self.image_path)
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(hsv, lower, upper)
