@@ -78,13 +78,14 @@ class CaptureSave():
                 # print("---------")
                 # print(latest_image_path)
                 blueobject = configuration.BlueWasherDetect(latest_image_path)#image_path allocation pending
-                detect_variable = blueobject.detect_washer()
-                # print("-----------")
-                # print("detect_variable",detect_variable)
-                orientation_variable =blueobject.check_orientation()
+                # detect_variable = blueobject.detect_washer()
+                # # print("-----------")
+                # # print("detect_variable",detect_variable)
+                # orientation_variable =blueobject.check_orientation()
+                result = configuration.combined_result()
                 # print("-----------")
                 # print("orreintation_varible",orientation_variable)
-                if detect_variable and orientation_variable:
+                if result:
                     SEQ1 = True
                     url = "http://194.233.76.50:3004/uploadSeq/blue"
                     try:

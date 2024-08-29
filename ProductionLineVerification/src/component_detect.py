@@ -183,5 +183,5 @@ class ComponentDetect():
         # Default return if no circles are detected or conditions aren't met
         return ["NO COMPONENT DETECTED", False]
 
-cd = ComponentDetect("images/current.jpg")
-print(cd.DetectComponent())
+# cd = ComponentDetect("images/current.jpg")
+# print(cd.DetectComponent())
