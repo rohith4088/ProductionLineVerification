@@ -53,8 +53,8 @@ class CaptureSave():
         # print("----------")
         # print(COMP)
         if  COMP == False:
-            componentobject = component_detect.ComponentDetect(latest_image_path)
-            text = componentobject.DetectComponent()
+            componentobject = component_detect.CombinedDetector(latest_image_path)
+            text = componentobject.DetectComponents()
             # print("-------")
             # print(text)
             # print("--------")
